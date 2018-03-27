@@ -608,7 +608,8 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn,CWallet *pwallet,CP
 /* MCHN END */    
 
         // Compute final coinbase transaction.
-        txNew.vout[0].nValue = GetBlockValue(nHeight, nFees);
+        int nHeightMinedByMe = pindexPrev->nHeightMinedByMe + 1;
+        txNew.vout[0].nValue = GetBlockValue(nHeight, nHeightMinedByMe);
         txNew.vin[0].scriptSig = CScript() << nHeight << OP_0;
 
         pblock->vSigner[0]=ppubkey->size();
