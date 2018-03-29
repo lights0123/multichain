@@ -1862,7 +1862,11 @@ CAmount GetBlockValue(int nHeight, int nHeightMinedByMe)
     // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
     nSubsidy >>= halvings;
 
-    nSubsidy *= (2/15)*pow(0.625, nHeightMinedByMe);
+    // Calculate percentage based on previous mined blocks; loyalty
+    CAmount percent = (2/15)*pow(0.625, nHeightMinedByMe);
+  
+    // factor in percentage but cp it at 100%
+    nSubsidy *= (percent > 1) ? 1 : percent;
 
     return nSubsidy;
 }
