@@ -1865,7 +1865,7 @@ CAmount GetBlockValue(int nHeight, int nHeightMinedByMe)
     // Calculate percentage based on previous mined blocks; loyalty
     CAmount percent = (2/15)*pow(0.625, nHeightMinedByMe);
   
-    // factor in percentage but cp it at 100%
+    // factor in percentage but cap it at 100%
     nSubsidy *= (percent > 1) ? 1 : percent;
 
     return nSubsidy;
