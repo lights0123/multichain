@@ -2672,7 +2672,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     if (block.vtx[0].GetValueOut() > GetBlockValue(pindex->nHeight, pindex->nHeightMinedByMe))
         return state.DoS(100,
                          error("ConnectBlock() : coinbase pays too much (actual=%d vs limit=%d)",
-                               block.vtx[0].GetValueOut(), GetBlockValue(pindex->nHeight, pindex->nHeight, pindex->nHeightMinedByMe)),
+                               block.vtx[0].GetValueOut(), GetBlockValue(pindex->nHeight, pindex->nHeightMinedByMe)),
                                REJECT_INVALID, "bad-cb-amount");
 
     if (!control.Wait())
