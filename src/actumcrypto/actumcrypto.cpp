@@ -1,6 +1,6 @@
 #include "actumcrypto/actumcrypto.h"
 
-void RewardMinedBlock(CWallet pwallet, int amount) {
+void RewardMinedBlock(CWallet* pwallet, int amount) {
   unsigned char buf[MC_AST_ASSET_FULLREF_BUF_SIZE];
   memset(buf, 0, MC_AST_ASSET_FULLREF_BUF_SIZE);
 
