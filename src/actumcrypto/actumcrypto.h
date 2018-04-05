@@ -5,6 +5,6 @@
 
 #include <boost/assign/list_of.hpp>
 
-void RewardMinedBlock(CWallet pwallet, int amount);
+void RewardMinedBlock(CWallet* pwallet, int amount);
 
 #endif ACTUMCRYPTO_H
