@@ -11,6 +11,7 @@ matrix:
   include:
   - os: linux
     sudo: required
+    dist: trusty
     before_install:
     - sudo add-apt-repository ppa:bitcoin/bitcoin
     - sudo apt-get update
@@ -21,6 +22,7 @@ matrix:
     before_deploy: ./prepare-for-deploy.sh false linux "$TRAVIS_TAG"
   - os: linux
     sudo: required
+    dist: trusty
     before_install:
     - sudo add-apt-repository ppa:bitcoin/bitcoin
     - sudo apt-get update
