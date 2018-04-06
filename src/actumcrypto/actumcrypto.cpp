@@ -27,46 +27,50 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   size_t elem_size;
   const unsigned char *elem;
 
-  BOOST_FOREACH (const CTxDestination& address, pwallet->GetAccountAddresses("")){
+  size_t elem_size;
+  const unsigned char *elem;
 
-      CScript scriptPubKey = GetScriptForDestination(address);
+  if(lpScript)
+  {
+      if(fDebug)LogPrint("mchnminor","mchn: Sending script with %d OP_DROP element(s)",lpScript->GetNumElements());
+      if(lpScript->GetNumElements() > MCP_STD_OP_DROP_COUNT )
+          throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid number of elements in script");
 
-      if(lpScript)
+      for(int element=0;element < lpScript->GetNumElements();element++)
       {
-          if(fDebug)LogPrint("mchnminor","mchn: Sending script with %d OP_DROP element(s)",lpScript->GetNumElements());
-          if(lpScript->GetNumElements() > MCP_STD_OP_DROP_COUNT )
-              throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid number of elements in script");
-
-          for(int element=0;element < lpScript->GetNumElements();element++)
+          elem = lpScript->GetData(element,&elem_size);
+          if(elem)
           {
-              elem = lpScript->GetData(element,&elem_size);
-              if(elem)
-              {
-                  scriptPubKey << vector<unsigned char>(elem, elem + elem_size) << OP_DROP;
-              }
-              else
-                  throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid script");
+              scriptPubKey << vector<unsigned char>(elem, elem + elem_size) << OP_DROP;
           }
+          else
+              throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid script");
       }
-
-      scriptPubKeys.push_back(scriptPubKey);
   }
 
-  set<CTxDestination> *lpFromAddresses;
+  CScript scriptOpReturn=CScript();
+
+  if(opreturnscript)
+  {
+      elem = opreturnscript->GetData(0,&elem_size);
+      if(elem_size > 0)
+      {
+          scriptOpReturn << OP_RETURN << vector<unsigned char>(elem, elem + elem_size);
+      }
+  }
+/* MCHN END */
+
 
   // Create and send the transaction
   CReserveKey reservekey(pwallet);
-
-  CWalletTx wtx;
-
-  int eErrorCode;
+  CAmount nFeeRequired;
   string strError;
-
-  if (!pwallet->CreateTransaction(scriptPubKeys, 0, CScript(), wtx, reservekey, 0, strError, NULL, lpFromAddresses, 1, -1, -1, NULL, &eErrorCode))
+  if (!pwallet->CreateTransaction(scriptPubKey, 0, scriptOpReturn, wtx, reservekey, 0, strError))
   {
-      throw JSONRPCError(eErrorCode, strError);
+      LogPrintf("SendMoney() : %s\n", strError);
+      throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strError);
   }
-
+/* MCHN START */
   string strRejectReason;
   if (!pwallet->CommitTransaction(wtx, reservekey, strRejectReason))
   {
@@ -79,5 +83,4 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
           throw JSONRPCError(RPC_TRANSACTION_REJECTED, "Error: this transaction was rejected. This may be because you are sharing private keys between nodes, and another node has spent the funds used by this transaction.");
       }
   }
-
 }
