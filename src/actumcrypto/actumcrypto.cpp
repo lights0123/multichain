@@ -51,20 +51,20 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   set<CTxDestination> *lpFromAddresses;
 
   // Create and send the transaction
-  CReserveKey reservekey(pwalletMain);
+  CReserveKey reservekey(pwallet);
 
   CWalletTx wtx;
 
   int eErrorCode;
   string strError;
 
-  if (!pwalletMain->CreateTransaction(scriptPubKeys, 0, scriptOpReturn, wtx, reservekey, 0, strError, NULL, lpFromAddresses, 1, -1, -1, NULL, &eErrorCode))
+  if (!pwallet->CreateTransaction(scriptPubKeys, 0, scriptOpReturn, wtx, reservekey, 0, strError, NULL, lpFromAddresses, 1, -1, -1, NULL, &eErrorCode))
   {
       throw JSONRPCError(eErrorCode, strError);
   }
 
   string strRejectReason;
-  if (!pwalletMain->CommitTransaction(wtx, reservekey, strRejectReason))
+  if (!pwallet->CommitTransaction(wtx, reservekey, strRejectReason))
   {
       if(strRejectReason.size())
       {
