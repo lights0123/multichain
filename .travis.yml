@@ -15,22 +15,18 @@ matrix:
     before_install:
     - sudo add-apt-repository ppa:bitcoin/bitcoin -y
     - sudo apt-get update
-    - sudo apt-get install build-essential libtool autotools-dev automake pkg-config
-      libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common
-      libdb4.8-dev libdb4.8++-dev
+    - sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common libdb4.8-dev libdb4.8++-dev
     script: "./autogen.sh && ./configure && make"
     before_deploy: ./prepare-for-deploy.sh false linux "$TRAVIS_TAG"
+    env:
+    - BUILD_FOR=Linux
   - os: linux
     sudo: required
     dist: trusty
     before_install:
     - sudo add-apt-repository ppa:bitcoin/bitcoin -y
     - sudo apt-get update
-    - sudo apt-get install build-essential libtool autotools-dev automake pkg-config
-      libssl-dev libevent-dev bsdmainutils g++-mingw-w64-i686 mingw-w64-i686-dev g++-mingw-w64-x86-64
-      mingw-w64-x86-64-dev curl libboost-system-dev libboost-filesystem-dev libboost-chrono-dev
-      libboost-program-options-dev libboost-test-dev libboost-thread-dev libdb4.8-dev
-      libdb4.8++-dev
+    - sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils g++-mingw-w64-i686 mingw-w64-i686-dev g++-mingw-w64-x86-64 mingw-w64-x86-64-dev curl libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev libdb4.8-dev libdb4.8++-dev
     script:
     - "./autogen.sh"
     - cd depends && make HOST=x86_64-w64-mingw32 -j4 && cd ..
@@ -38,6 +34,8 @@ matrix:
       --enable-static --with-pic"
     - make
     before_deploy: ./prepare-for-deploy.sh true windows "$TRAVIS_TAG"
+    env:
+    - BUILD_FOR=Windows
   - os: osx
     before_install:
     - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config rename || true
@@ -54,4 +52,6 @@ matrix:
     - ./configure --with-gui=no --with-libs=no --with-miniupnpc=no
     - make
     before_deploy: ./prepare-for-deploy.sh false mac "$TRAVIS_TAG"
+    env:
+    - BUILD_FOR=Mac
 
