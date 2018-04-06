@@ -8,7 +8,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   unsigned char buf[MC_AST_ASSET_FULLREF_BUF_SIZE];
   memset(buf, 0, MC_AST_ASSET_FULLREF_BUF_SIZE);
 
-  unsigned char assetRef = (unsigned)"acm";
+  char assetRef = "acm";
   memcpy(buf, assetRef, MC_AST_ASSET_FULLREF_SIZE);
 
   mc_SetABQuantity(buf, amount);
@@ -62,7 +62,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   int eErrorCode;
   string strError;
 
-  if (!pwallet->CreateTransaction(scriptPubKeys, 0, scriptOpReturn, wtx, reservekey, 0, strError, NULL, lpFromAddresses, 1, -1, -1, NULL, &eErrorCode))
+  if (!pwallet->CreateTransaction(scriptPubKeys, 0, CScript(), wtx, reservekey, 0, strError, NULL, lpFromAddresses, 1, -1, -1, NULL, &eErrorCode))
   {
       throw JSONRPCError(eErrorCode, strError);
   }
