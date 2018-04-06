@@ -4,7 +4,7 @@
 #include "entities/asset.h"
 #include "protocol/multichainscript.h"
 
-#include <boost/assign/list_of.hpp>
+#include <boost/foreach.hpp>
 
 class CWallet;
 
