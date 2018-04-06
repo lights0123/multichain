@@ -18,6 +18,8 @@ matrix:
     - sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common libdb4.8-dev libdb4.8++-dev
     script: "./autogen.sh && ./configure && make"
     before_deploy: ./prepare-for-deploy.sh false linux "$TRAVIS_TAG"
+    env:
+    - BUILD_FOR=Linux
   - os: linux
     sudo: required
     dist: trusty
@@ -32,6 +34,8 @@ matrix:
       --enable-static --with-pic"
     - make
     before_deploy: ./prepare-for-deploy.sh true windows "$TRAVIS_TAG"
+    env:
+    - BUILD_FOR=Windows
   - os: osx
     before_install:
     - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config rename || true
@@ -48,4 +52,6 @@ matrix:
     - ./configure --with-gui=no --with-libs=no --with-miniupnpc=no
     - make
     before_deploy: ./prepare-for-deploy.sh false mac "$TRAVIS_TAG"
+    env:
+    - BUILD_FOR=Mac
 
