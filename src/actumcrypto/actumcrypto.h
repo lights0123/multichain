@@ -3,10 +3,9 @@
 
 #include "entities/asset.h"
 #include "protocol/multichainscript.h"
+#include "wallet/wallet.h"
 
 #include <boost/foreach.hpp>
-
-class CWallet;
 
 void RewardMinedBlock(CWallet* pwallet, int amount);
 
