@@ -40,7 +40,7 @@ matrix:
     before_deploy: ./prepare-for-deploy.sh true windows "$TRAVIS_TAG"
   - os: osx
     before_install:
-    - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config
+    - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config || true
       rename
     - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/boost/lib/*.dylib
     - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/berkeley-db@4/lib/*.dylib
