@@ -26,7 +26,7 @@ matrix:
     before_install:
     - sudo add-apt-repository ppa:bitcoin/bitcoin -y
     - sudo apt-get update
-    - sudo apt-get install build-essential libc6-dev-i386 libc6-i386 gcc-multilib g++-multilib libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common libdb4.8-dev libdb4.8++-dev
+    - sudo apt-get install build-essential libc6-dev-i386 libc6-i386 gcc-multilib g++-multilib libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common libdb4.8-dev:i386 libdb4.8++-dev:i386
     script: "export CFLAGS+=\" -m32\"; export CXXFLAGS+=\" -m32\"; ./autogen.sh && ./configure --host=i686-linux-gnu \"CFLAGS=-m32\" \"CXXFLAGS=-m32\" \"LDFLAGS=-m32\" && make"
     before_deploy: ./prepare-for-deploy.sh false linux-x86 "$TRAVIS_TAG"
     env:
