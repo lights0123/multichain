@@ -29,7 +29,7 @@ matrix:
     - sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common libdb4.8-dev libdb4.8++-dev g++-arm-linux-gnueabihf curl
     script:
     - "./autogen.sh"
-    - cd depends && HOST=arm-linux-gnueabihf -j4 && cd ..
+    - cd depends && make HOST=arm-linux-gnueabihf -j4 && cd ..
     - "./configure --prefix=`pwd`/depends/arm-linux-gnueabihf --enable-cxx --disable-shared --enable-static --with-pic"
     - make
     before_deploy: ./prepare-for-deploy.sh true linux-armhf "$TRAVIS_TAG"
