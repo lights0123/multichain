@@ -19,12 +19,11 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   lpScript->SetAssetQuantities(lpBuffer, MC_SCR_ASSET_SCRIPT_TYPE_TRANSFER);
 
-  std::vector <CScript> scriptPubKeys;
+  vector <CScript> scriptPubKeys;
   size_t elem_size;
   const unsigned char *elem;
 
-  BOOST_FOREACH (const CTxDestination& address, pwallet.GetAccountAddresses(""))
-  {
+  BOOST_FOREACH (const CTxDestination& address, pwallet->GetAccountAddresses("")){
 
       CScript scriptPubKey = GetScriptForDestination(address);
 
