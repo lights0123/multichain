@@ -74,6 +74,7 @@ endif
 .PHONY: FORCE
 # bitcoin core #
 BITCOIN_CORE_H = \
+  actumcrypto/actumcrypto.h \
   storage/addrman.h \
   structs/alert.h \
   utils/allocators.h \
@@ -169,6 +170,7 @@ libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 # server: shared between bitcoind and bitcoin-qt
 libbitcoin_server_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS)
 libbitcoin_server_a_SOURCES = \
+  actumcrypto/actumcrypto.cpp \
   storage/addrman.cpp \
   structs/alert.cpp \
   structs/bloom.cpp \
