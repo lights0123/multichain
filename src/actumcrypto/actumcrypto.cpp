@@ -8,10 +8,10 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   unsigned char buf[MC_AST_ASSET_FULLREF_BUF_SIZE];
   memset(buf, 0, MC_AST_ASSET_FULLREF_BUF_SIZE);
 
-  unsigned char assetRef = ("acm").c_str();
+  unsigned char assetRef = (unsigned)"acm";
   memcpy(buf, assetRef, MC_AST_ASSET_FULLREF_SIZE);
 
-  mc_SetABQuantity(buf, block_value);
+  mc_SetABQuantity(buf, amount);
 
   mc_Buffer *lpBuffer=mc_gState->m_TmpBuffers->m_RpcABNoMapBuffer1;
   lpBuffer->Clear();
