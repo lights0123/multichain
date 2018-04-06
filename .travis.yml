@@ -1,0 +1,55 @@
+language: cpp
+deploy:
+  provider: releases
+  api_key:
+    secure: SOvfv/h8+VkEsMJEpIT6f6zPw7W0gL4j/BY2uMoJjYEuCSJEXgdQaT6iHcX0ye7MdEF1N1X0Ji9YqZwFXGqgCdNvr14/4gkPMmtZfJsW5bCzyMmRogRE6vP28folAKB0v0Z3v+j+H2TTQx1gktF1lVlfbPFVn+ZEcLJT0WsDrGB1EpCWKKGnJ6OsajTF4SMNpRauC2b+m1KqoLsDFCMCHCogttonPgoVmG8weWt7NDI8yHfJ/ffOFilIlo5FSvhJvAepwG+pQlUipuz2eZQO+sPonSVWBk2f3QnWuOO7240iOBd4Ce7/R43TTRcQrfQE7cDi6fxpAu3ajLdHfpUoOz/EITqq+CJ6bBiDxpzpxGuMNGR5+beKbAecJ5XJ6VtIRmWGiU8P9lBeTwQJQUixa12PNSu02dYhzO4mQ5BBOEQ+xe5OZXrAFk1ugUhucfUkwEtT98eTa7a7GhsNFuPKDdHF+VGohcKfTtqff0OLdM+PdliYK0PhtkOOm2NHas3yJtrzga3sE7M1latkvctO1/lzvb1ANg2yoLwPCU+F4YkK9fAwiLgvSQroQVc8Y42373+VM26O6so4huy0jAEX2fvDNZgxzuhumUgs9iKvjXfpR58h/wOsfXqPz92HndERZmeyvE0ZHVOSOjjFEBvFJ+CLi8R7jE+WDfol0U3svIs=
+  file_glob: true
+  file: *.txt
+  on:
+    tags: true
+matrix:
+  include:
+  - os: linux
+    sudo: required
+    before_install:
+    - sudo add-apt-repository ppa:bitcoin/bitcoin
+    - sudo apt-get update
+    - sudo apt-get install build-essential libtool autotools-dev automake pkg-config
+      libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common
+      libdb4.8-dev libdb4.8++-dev
+    script: "./autogen.sh && ./configure && make"
+    before_deploy: ./prepare-for-deploy.sh false linux "$TRAVIS_TAG"
+  - os: linux
+    sudo: required
+    before_install:
+    - sudo add-apt-repository ppa:bitcoin/bitcoin
+    - sudo apt-get update
+    - sudo apt-get install build-essential libtool autotools-dev automake pkg-config
+      libssl-dev libevent-dev bsdmainutils g++-mingw-w64-i686 mingw-w64-i686-dev g++-mingw-w64-x86-64
+      mingw-w64-x86-64-dev curl libboost-system-dev libboost-filesystem-dev libboost-chrono-dev
+      libboost-program-options-dev libboost-test-dev libboost-thread-dev libdb4.8-dev
+      libdb4.8++-dev
+    script:
+    - "./autogen.sh"
+    - cd depends && make HOST=x86_64-w64-mingw32 -j4 && cd ..
+    - "./configure --prefix=`pwd`/depends/x86_64-w64-mingw32 --enable-cxx --disable-shared
+      --enable-static --with-pic"
+    - make
+    before_deploy: ./prepare-for-deploy.sh true windows "$TRAVIS_TAG"
+  - os: osx
+    before_install:
+    - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config
+      rename
+    - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/boost/lib/*.dylib
+    - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/berkeley-db@4/lib/*.dylib
+    - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/openssl/lib/*.dylib
+    - EDITOR="./mac-openssl-fix.py" brew edit openssl
+    - brew install openssl --force
+    script:
+    - export LDFLAGS=-L/usr/local/opt/openssl/lib
+    - export CPPFLAGS=-I/usr/local/opt/openssl/include
+    - ./autogen.sh
+    - ./configure --with-gui=no --with-libs=no --with-miniupnpc=no
+    - make
+    before_deploy: ./prepare-for-deploy.sh false mac "$TRAVIS_TAG"
+
