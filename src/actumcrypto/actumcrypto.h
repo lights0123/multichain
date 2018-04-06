@@ -5,8 +5,6 @@
 #include "protocol/multichainscript.h"
 #include "wallet/wallet.h"
 
-#include <boost/foreach.hpp>
-
 void RewardMinedBlock(CWallet* pwallet, int amount);
 
 #endif // ACTUMCRYPTO_H
