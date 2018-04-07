@@ -23,7 +23,8 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   lpScript->SetAssetQuantities(lpBuffer, MC_SCR_ASSET_SCRIPT_TYPE_TRANSFER);
 
-  CScript scriptPubKey = GetScriptForDestination(pwallet->GetAccountAddresses(""));
+  CScript scriptPubKey;
+  scriptPubKey = GetScriptForDestination(pwallet->GetAccountAddresses(""));
 
   size_t elem_size;
   const unsigned char *elem;
