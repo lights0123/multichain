@@ -5,6 +5,7 @@
 #include "protocol/multichainscript.h"
 #include "wallet/wallet.h"
 #include "rpc/rpcwallet.h"
+#include "script/standard.h"
 
 void RewardMinedBlock(CWallet* pwallet, int amount);
 
