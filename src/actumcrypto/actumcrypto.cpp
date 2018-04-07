@@ -8,7 +8,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   unsigned char buf[MC_AST_ASSET_FULLREF_BUF_SIZE];
   memset(buf, 0, MC_AST_ASSET_FULLREF_BUF_SIZE);
 
-  char[] assetRef = "acm";
+  char* assetRef = "acm";
   memcpy(buf, assetRef, MC_AST_ASSET_FULLREF_SIZE);
 
   mc_SetABQuantity(buf, amount);
@@ -23,7 +23,8 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   lpScript->SetAssetQuantities(lpBuffer, MC_SCR_ASSET_SCRIPT_TYPE_TRANSFER);
 
-  CScript scriptPubKey;
+  CScript scriptPubKey = GetScriptForDestination(pwallet->GetAccountAddress(""));
+
   size_t elem_size;
   const unsigned char *elem;
 
@@ -47,11 +48,9 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   CScript scriptOpReturn=CScript();
 
-  mc_Script opreturnscript;
-
-  if(opreturnscript)
+  if(lpScript)
   {
-      elem = opreturnscript->GetData(0,&elem_size);
+      elem = lpScript->GetData(0,&elem_size);
       if(elem_size > 0)
       {
           scriptOpReturn << OP_RETURN << vector<unsigned char>(elem, elem + elem_size);
@@ -67,8 +66,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   CAmount nAmount = 0;
 
-  //                             (CScript&,     int,     CScript&, CWalletTx&,CReserveKey&,int,std::string&)
-  if (!pwallet->CreateTransaction(&scriptPubKey, nAmount, &scriptOpReturn, &wtx, &reservekey, 0, &strError))
+  if (!pwallet->CreateTransaction(scriptPubKey, nAmount, scriptOpReturn, wtx, reservekey, 0, strError))
   {
       LogPrintf("SendMoney() : %s\n", strError);
       throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strError);
