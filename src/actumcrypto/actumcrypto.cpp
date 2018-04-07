@@ -8,7 +8,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   unsigned char buf[MC_AST_ASSET_FULLREF_BUF_SIZE];
   memset(buf, 0, MC_AST_ASSET_FULLREF_BUF_SIZE);
 
-  char* assetRef = "acm";
+  char[] assetRef = "acm";
   memcpy(buf, assetRef, MC_AST_ASSET_FULLREF_SIZE);
 
   mc_SetABQuantity(buf, amount);
@@ -23,7 +23,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   lpScript->SetAssetQuantities(lpBuffer, MC_SCR_ASSET_SCRIPT_TYPE_TRANSFER);
 
-  CScript& scriptPubKey;
+  CScript scriptPubKey;
   size_t elem_size;
   const unsigned char *elem;
 
@@ -59,11 +59,11 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   }
 /* MCHN END */
 
-  CWalletTx& wtx;
+  CWalletTx wtx;
 
   // Create and send the transaction
-  CReserveKey& reservekey(pwallet);
-  string& strError;
+  CReserveKey reservekey(pwallet);
+  string strError;
 
   CAmount nAmount = 0;
 
