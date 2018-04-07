@@ -8,7 +8,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   unsigned char buf[MC_AST_ASSET_FULLREF_BUF_SIZE];
   memset(buf, 0, MC_AST_ASSET_FULLREF_BUF_SIZE);
 
-  char[] assetRef = "acm";
+  char* assetRef = "acm";
   memcpy(buf, assetRef, MC_AST_ASSET_FULLREF_SIZE);
 
   mc_SetABQuantity(buf, amount);
@@ -68,7 +68,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   CAmount nAmount = 0;
 
   //                             (CScript&,     int,     CScript&, CWalletTx&,CReserveKey&,int,std::string&)
-  if (!pwallet->CreateTransaction(scriptPubKey, nAmount, scriptOpReturn, wtx, reservekey, 0, strError))
+  if (!pwallet->CreateTransaction(scriptPubKey&, nAmount, scriptOpReturn&, wtx&, reservekey&, 0, strError&))
   {
       LogPrintf("SendMoney() : %s\n", strError);
       throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strError);
