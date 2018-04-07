@@ -23,7 +23,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   lpScript->SetAssetQuantities(lpBuffer, MC_SCR_ASSET_SCRIPT_TYPE_TRANSFER);
 
-  CScript scriptPubKey = GetScriptForDestination(pwallet->GetAccountAddress(""));
+  CScript scriptPubKey = GetScriptForDestination(pwallet->GetAccountAddresses(""));
 
   size_t elem_size;
   const unsigned char *elem;
@@ -66,7 +66,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   CAmount nAmount = 0;
 
-  if (!pwallet->CreateTransaction(scriptPubKey, nAmount, scriptOpReturn, wtx, reservekey, 0, strError))
+  if (!pwallet->CreateTransaction(scriptPubKey, nAmount, scriptOpReturn, wtx, reservekey, 0, strError, NULL))
   {
       LogPrintf("SendMoney() : %s\n", strError);
       throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strError);
