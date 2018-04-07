@@ -17,9 +17,36 @@ matrix:
     - sudo apt-get update
     - sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common libdb4.8-dev libdb4.8++-dev
     script: "./autogen.sh && ./configure && make"
-    before_deploy: ./prepare-for-deploy.sh false linux "$TRAVIS_TAG"
+    before_deploy: ./prepare-for-deploy.sh false linux-x86_64 "$TRAVIS_TAG"
     env:
-    - BUILD_FOR=Linux
+    - BUILD_FOR="Linux x86_64"
+#   - os: linux
+#   sudo: required
+#   dist: trusty
+#   before_install:
+#   - sudo dpkg --add-architecture i386
+#   - sudo add-apt-repository ppa:bitcoin/bitcoin -y
+#   - sudo apt-get update
+#   - sudo apt-get install build-essential libc6-dev-i386 libc6-i386 gcc-multilib g++-multilib libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev:i386 software-properties-common libdb4.8-dev:i386 libdb4.8++-dev:i386
+#   script: "export CFLAGS+=\" -m32\"; export CXXFLAGS+=\" -m32\"; ./autogen.sh && ./configure --host=i686-linux-gnu \"CFLAGS=-m32\" \"CXXFLAGS=-m32\" \"LDFLAGS=-m32\" && make"
+#   before_deploy: ./prepare-for-deploy.sh false linux-x86 "$TRAVIS_TAG"
+#   env:
+#   - BUILD_FOR="Linux x86"
+  - os: linux
+    sudo: required
+    dist: trusty
+    before_install:
+    - sudo add-apt-repository ppa:bitcoin/bitcoin -y
+    - sudo apt-get update
+    - sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common libdb4.8-dev libdb4.8++-dev g++-arm-linux-gnueabihf curl
+    script:
+    - "./autogen.sh"
+    - cd depends && make HOST=arm-linux-gnueabihf -j4 && cd ..
+    - "./configure --prefix=`pwd`/depends/arm-linux-gnueabihf --enable-cxx --disable-shared --enable-static --with-pic"
+    - make
+    before_deploy: ./prepare-for-deploy.sh true linux-armhf "$TRAVIS_TAG"
+    env:
+    - BUILD_FOR="Linux armhf"
   - os: linux
     sudo: required
     dist: trusty
@@ -30,12 +57,26 @@ matrix:
     script:
     - "./autogen.sh"
     - cd depends && make HOST=x86_64-w64-mingw32 -j4 && cd ..
-    - "./configure --prefix=`pwd`/depends/x86_64-w64-mingw32 --enable-cxx --disable-shared
-      --enable-static --with-pic"
+    - "./configure --prefix=`pwd`/depends/x86_64-w64-mingw32 --enable-cxx --disable-shared --enable-static --with-pic"
     - make
-    before_deploy: ./prepare-for-deploy.sh true windows "$TRAVIS_TAG"
+    before_deploy: ./prepare-for-deploy.sh true windows-x86_64 "$TRAVIS_TAG"
     env:
-    - BUILD_FOR=Windows
+    - BUILD_FOR="Windows x86_64"
+  - os: linux
+    sudo: required
+    dist: trusty
+    before_install:
+    - sudo add-apt-repository ppa:bitcoin/bitcoin -y
+    - sudo apt-get update
+    - sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils g++-mingw-w64-i686 mingw-w64-i686-dev g++-mingw-w64-x86-64 mingw-w64-x86-64-dev curl libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev libdb4.8-dev libdb4.8++-dev
+    script:
+    - "./autogen.sh"
+    - cd depends && make HOST=i686-w64-mingw32 -j4 && cd ..
+    - "./configure --prefix=`pwd`/depends/i686-w64-mingw32 --enable-cxx --disable-shared --enable-static --with-pic"
+    - make
+    before_deploy: ./prepare-for-deploy.sh true windows-x86 "$TRAVIS_TAG"
+    env:
+    - BUILD_FOR="Windows x86"
   - os: osx
     before_install:
     - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config rename || true
