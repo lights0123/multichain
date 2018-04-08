@@ -20,7 +20,7 @@ matrix:
     - sudo apt-get install build-essential libtool autotools-dev automake pkg-config
       libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common
       libdb4.8-dev libdb4.8++-dev
-    script: "./autogen.sh && ./configure LDFLAGS=\"-static\" PKG_CONFIG=\"pkg-config --static\" && make"
+    script: "./autogen.sh && ./configure LDFLAGS=\"-static\" PKG_CONFIG=\"pkg-config --static\" --enable-static --disable-shared && make"
     before_deploy: ./prepare-for-deploy.sh false linux-x86_64 "$TRAVIS_TAG"
     env:
     - BUILD_FOR="Linux x86_64"

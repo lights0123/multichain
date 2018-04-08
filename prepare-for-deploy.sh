@@ -4,9 +4,13 @@
 
 if [ "$1" = true ]
 then
-	mv src/*.exe .
-	tar -czf "actumcrypto-multichain-$2-$3.tar.gz" *.exe
+	mkdir actumcrypto
+	mv src/*.exe actumcrypto/
+	rename s/multichain/actumcrypto/ actumcrypto/*.exe
+	tar -czf "actumcrypto-multichain-$2-$3.tar.gz" actumcrypto/*.exe
 else
-	cd src
-	find . -maxdepth 1 -perm -111 -type f -print0 | xargs -0 tar -czf "../actumcrypto-multichain-$2-$3.tar.gz"
+	mkdir actumcrypto
+	find src -maxdepth 1 -perm -111 -type f | xargs mv -t actumcrypto/
+	rename s/multichain/actumcrypto/ actumcrypto/*
+	tar -czf "actumcrypto-multichain-$2-$3.tar.gz" actumcrypto/*
 fi
