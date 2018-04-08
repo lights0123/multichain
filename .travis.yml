@@ -4,7 +4,8 @@ deploy:
   api_key:
     secure: ilkQyJbR1EK5tkXvFVerEWahiWYJsiMSG5h+bKcWh42E0FEH5gUDKqwUeu+V2uzaanvz+xuHlruVC5APw34ATARsyAvnS41u1g8RbZnuierUlOsmPati1CCBT1YzGrxSancemyZs2CjMnpu9O2JzVNWInYazPn0eq7emnbMQyV1qVgjb6v/sPFzWZnMTRZDV+oTaVvr0xH46oKEWEFZUWNlRVfrwGP/2X/69l7jCYbw14OERwS48FcBf0iatk0fEcvkeFP0HhtP9GL5Gm1fzJB5WZpg95X+K2EoXMZ4+C8T/VLqU6Vajqb6Hyi/mLzkHarmpNNmrzOEg/sjddhECF3WEK7PrlTTYQitdBw+isiem9k2dpi8hvkd+pmzGxoTqG4m+UcpSG55tQWddO4osijNtdfBh4soZjYF5DyHRlkXo0XLC+iuPtUcsbe1gG5AS88GMuG3Ggx+aAFM9almwe5j7OHy9DcN9OrpB3HOgAXxd8xSPb1ezXge7TT1dfqu+Asmmd32i9QXVJoLdq+W/VyjfCXka9z5JIP9wxaabP2xExMcOc3zn+9VJaZNR4ejjTsgFVspEzL6XDKi31JKdSZ1/LCckY5aAjSrkPfP99jzFClQDUSKIuOIO1TW7n87v69q9t9Gzcp8Vq2QJdMJ1Xa9zDPkxqpE0EnloWGrR05c=
   file_glob: true
-  file: "*.txt"
+  file: "*.tar.gz"
+  skip_cleanup: true
   on:
     tags: true
 matrix:
@@ -37,7 +38,7 @@ matrix:
     - "./configure --prefix=`pwd`/depends/arm-linux-gnueabihf --enable-cxx --disable-shared
       --enable-static --with-pic"
     - make
-    before_deploy: ./prepare-for-deploy.sh true linux-armhf "$TRAVIS_TAG"
+    before_deploy: ./prepare-for-deploy.sh false linux-armhf "$TRAVIS_TAG"
     env:
     - BUILD_FOR="Linux armhf"
   - os: linux
