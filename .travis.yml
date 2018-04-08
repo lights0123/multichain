@@ -20,7 +20,7 @@ matrix:
     - sudo apt-get install build-essential libtool autotools-dev automake pkg-config
       libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common
       libdb4.8-dev libdb4.8++-dev
-    script: "./autogen.sh && ./configure LDFLAGS=-static && make"
+    script: "./autogen.sh && ./configure LDFLAGS=\"-static\" PKG_CONFIG=\"pkg-config --static\" && make"
     before_deploy: ./prepare-for-deploy.sh false linux-x86_64 "$TRAVIS_TAG"
     env:
     - BUILD_FOR="Linux x86_64"
@@ -36,7 +36,7 @@ matrix:
     script:
     - "./autogen.sh"
     - cd depends && make HOST=arm-linux-gnueabihf -j4 && cd ..
-    - "./configure LDFLAGS=-static --prefix=`pwd`/depends/arm-linux-gnueabihf --enable-cxx
+    - "./configure LDFLAGS=\"-static\" PKG_CONFIG=\"pkg-config --static\" --prefix=`pwd`/depends/arm-linux-gnueabihf --enable-cxx
       --disable-shared --enable-static --with-pic"
     - make
     before_deploy: ./prepare-for-deploy.sh false linux-armhf "$TRAVIS_TAG"
