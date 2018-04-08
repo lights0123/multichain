@@ -63,12 +63,12 @@ TESTS =
 
 if BUILD_BITCOIND
 #  bin_PROGRAMS += bitcoind multichaind						# MCHN
-  bin_PROGRAMS += actumcryptod actumcryptod-cold					# MCHN
+  bin_PROGRAMS += multichaind multichaind-cold					# MCHN
 endif
 
 if BUILD_BITCOIN_UTILS
 #  bin_PROGRAMS += multichain-util multichain-cli bitcoin-cli bitcoin-tx		# MCHN
-  bin_PROGRAMS += actumcrypto-util actumcrypto-cli 		# MCHN
+  bin_PROGRAMS += multichain-util multichain-cli 		# MCHN
 endif
 
 .PHONY: FORCE
