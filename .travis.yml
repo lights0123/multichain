@@ -3,7 +3,7 @@ cache: ccache
 deploy:
   provider: releases
   api_key:
-    secure: RszdkqCF6DFNJTbY5M4VOwVhGTEPBtmmA09j8WK9OA60Ilwq0OyhWcjAb2GM99N6zT3E2QHqJr6yMOXsd117vs5GjGPEj/WFbPyM2TExJCeJKhoGim2Uvf7GaZCENuYzmntGoN9cHzEAdtAyLeh4YrWOKwoI1RXgbnBWKoC0m+Ko0VhEhdShld243Bage/RwmZuZlP3ki3HSig+KZg2zURHZCayneOuALYVBCvXZtm7I80IDOJ0HlDt0QeMcUQeSEbecQ6HSpWkqT9ZtphmtjzQ9SrTn99PHsvPWmsKp0KmDmRQ1Q9xIblB46jQLuUnVzrkFvniQ5fQ7nBv/wzKfHKI+w+Z2IrmWI3+0HuVzPtsUwb4TymkqFNUAcI8LfJsgKjBxyfWiiL0lm793nEqU40Usi3w8knW9Gfw/IX/j6KVnjqYgl5hF/GoYhgM6U0KO/Kftd6D9gDFLiFEjMwmqbwNurroH1R4xqlCtx2z4VFbmaDqbotHicBx5LcE7p963alQ5AFOpQuTMBDOai4bkLiGXazwBwWW8TdTZ332RvcqlK6zUQAPlZQETbUsForlGchg8fRGDaUud8AntVI0DBtNWLeMN9c78zIja6c/fMLV6UCZQZ3ZP9cpeOo9PAbsmna0jPhDq16uWNd49MqOD+itKtivafmdmg+PAVjyvf0c=
+    secure: E4XMebDbuGW2wQwZvu4nIoWuUn+8dJ8hh8n9wfAgoqSADBvz9/7EA4/v8+2PA0SkQt4oL/4DNVrqUiVj6ECYql3HNdmOZjbqIcnvOju5T5ToxBW011bYDWxk+Eaj1oznckZnBMpS2WD9TEYEJlWB0HMCAH88Z0n+LGrgh91EofbOWuOLpbz7HucS9s8iMhPk8Mvq1ar1V7XsokROLYpjjmDfbmY9GFrKF2ncC8JVUM/csdRdoeYQ+CdJDk6lH7V9Lf64g5XxOFYLHyb2hdiWkiZuJFzdMhO29l4NDrtGfFcXqsTgPdxSLr+QTb7u66/Novvd3qswLJkqIMNj5Od5CEJo0WeHvR+D5kzNREFdMIsKeGHXXncX0GY493M4f+lPVORvyakcJbLICzlzoDIm+NRMkHGljRRHEaLwaCJQf2nprS3vhBV0wIJpFFlRQaPjfu+WSQk4+ud0/54Qtdkh4ZRU/zqYZ0BHRPm8Y9QIDBYQb3TKfZrWW+ScEof021FzK2I2QdnmAny6tx1XD2ys+ATqnGG82D5PyK+npCMv+dQLrfKD+cTqokwl0U4sYxAdq6RCQSmhFhEzb2FfehsRhtGQdZMjGBAXl5pKAUsppGaDtx5Pn2pg9ggDVvm/BUSyJD1nqf4cNtPs/PI0q/C14BYtOV4q42LgoNYUg9/PNkI=
   file_glob: true
   file: "*.tar.gz"
   skip_cleanup: true
@@ -36,8 +36,8 @@ matrix:
     script:
     - "./autogen.sh"
     - cd depends && make HOST=arm-linux-gnueabihf -j4 && cd ..
-    - "./configure LDFLAGS=-static --prefix=`pwd`/depends/arm-linux-gnueabihf --enable-cxx --disable-shared
-      --enable-static --with-pic"
+    - "./configure LDFLAGS=-static --prefix=`pwd`/depends/arm-linux-gnueabihf --enable-cxx
+      --disable-shared --enable-static --with-pic"
     - make
     before_deploy: ./prepare-for-deploy.sh false linux-armhf "$TRAVIS_TAG"
     env:
@@ -84,7 +84,8 @@ matrix:
     - BUILD_FOR="Windows x86"
   - os: osx
     before_install:
-    - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config rename || true
+    - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config
+      rename || true
     - export PATH="/usr/local/opt/ccache/libexec:$PATH"
     - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/boost/lib/*.dylib
     - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/berkeley-db@4/lib/*.dylib
