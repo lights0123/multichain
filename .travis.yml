@@ -101,3 +101,5 @@ matrix:
     before_deploy: ./prepare-for-deploy.sh false mac "$TRAVIS_TAG"
     env:
     - BUILD_FOR=Mac
+notifications:
+  webhooks: https://actumcrypto.org/travis-ci
