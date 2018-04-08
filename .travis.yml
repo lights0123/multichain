@@ -1,4 +1,5 @@
 language: cpp
+cache: ccache
 deploy:
   provider: releases
   api_key:
@@ -83,8 +84,8 @@ matrix:
     - BUILD_FOR="Windows x86"
   - os: osx
     before_install:
-    - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config
-      rename || true rename
+    - brew install autoconf automake berkeley-db4 libtool boost openssl pkg-config ccache rename || true
+    - export PATH="/usr/local/opt/ccache/libexec:$PATH"
     - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/boost/lib/*.dylib
     - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/berkeley-db@4/lib/*.dylib
     - rename -e 's/.dylib/.dylib.hidden/' /usr/local/opt/openssl/lib/*.dylib
