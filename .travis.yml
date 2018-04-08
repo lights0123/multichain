@@ -20,7 +20,9 @@ matrix:
     - sudo apt-get install build-essential libtool autotools-dev automake pkg-config
       libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common
       libdb4.8-dev libdb4.8++-dev
-    script: "./autogen.sh && ./configure LDFLAGS=\"-static\" PKG_CONFIG=\"pkg-config --static\" --enable-static --disable-shared && make"
+    script:
+    - cd depends && make -j4 && cd ..
+    - "./autogen.sh && ./configure LDFLAGS=\"-static -L/usr/lib/x86_64-linux-gnu\" PKG_CONFIG=\"pkg-config --static\" --enable-static --disable-shared && make"
     before_deploy: ./prepare-for-deploy.sh false linux-x86_64 "$TRAVIS_TAG"
     env:
     - BUILD_FOR="Linux x86_64"
@@ -31,8 +33,11 @@ matrix:
     - sudo add-apt-repository ppa:bitcoin/bitcoin -y
     - sudo apt-get update
     - sudo apt-get install build-essential libtool autotools-dev automake pkg-config
-      libssl-dev libevent-dev bsdmainutils libboost-all-dev software-properties-common
-      libdb4.8-dev libdb4.8++-dev g++-arm-linux-gnueabihf curl
+      libssl-dev libevent-dev  libboost-all-dev software-properties-common
+      libdb4.8-dev libdb4.8++-dev g++-arm-linux-gnueabihf curl g++-aarch64-linux-gnu
+      g++-4.8-aarch64-linux-gnu gcc-4.8-aarch64-linux-gnu binutils-aarch64-linux-gnu
+      g++-4.8-arm-linux-gnueabihf gcc-4.8-arm-linux-gnueabihf binutils-gold 
+      binutils-arm-linux-gnueabihf g++-4.8-multilib gcc-4.8-multilib
     script:
     - "./autogen.sh"
     - cd depends && make HOST=arm-linux-gnueabihf -j4 && cd ..
