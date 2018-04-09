@@ -17,12 +17,12 @@ Note
 System requirements
 -------------------
 
-These compilation instructions have been tested on Ubuntu 14.04 x64 only.
+These compilation instructions have been tested on Ubuntu 16.04 x64 only.
 
 C++ compilers are memory-hungry, so it is recommended to have at least 1 GB of memory available when compiling MultiChain. With less memory, compilation may take much longer due to swapfile thrashing.
 
 
-Linux Build Notes (on Ubuntu 14.04 x64)
+Linux Build Notes (on Ubuntu 16.04 x64)
 =================
 
 Install dependencies
