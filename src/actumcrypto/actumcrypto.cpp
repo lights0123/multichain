@@ -5,11 +5,7 @@
 using namespace std;
 
 void RewardMinedBlock(CWallet* pwallet, int amount) {
-  unsigned char buf[MC_AST_ASSET_FULLREF_BUF_SIZE];
-  memset(buf, 0, MC_AST_ASSET_FULLREF_BUF_SIZE);
-
-  char assetRef[] = "acm";
-  memcpy(buf, assetRef, MC_AST_ASSET_FULLREF_SIZE);
+  unsigned char buf[MC_AST_ASSET_FULLREF_BUF_SIZE] = "acm";
 
   mc_SetABQuantity(buf, amount);
 
