@@ -71,7 +71,6 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   if (!pwallet->CreateTransaction(scriptPubKey, nAmount, scriptOpReturn, wtx, reservekey, nFee, strError, NULL))
   {
       LogPrintf("SendMoney() : %s\n", strError);
-      throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strError);
   }
 /* MCHN START */
   string strRejectReason;
