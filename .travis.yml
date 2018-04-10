@@ -9,6 +9,7 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+install: nvm install 9
 matrix:
   include:
   - os: linux
@@ -23,7 +24,10 @@ matrix:
     script:
     - cd depends && make -j4 && cd ..
     - "./autogen.sh && ./configure LDFLAGS=\"-static -L/usr/lib/x86_64-linux-gnu\" PKG_CONFIG=\"pkg-config --static\" --enable-static --disable-shared && make"
-    before_deploy: ./prepare-for-deploy.sh false linux-x86_64 "$TRAVIS_TAG"
+    - ./rename-binaries.sh false
+    - strip src/actumcryptod
+    - cd tests && npx mocha && cd ..
+    before_deploy: ./prepare-for-deploy.sh linux-x86_64 "$TRAVIS_TAG"
     env:
     - BUILD_FOR="Linux x86_64"
   - os: linux
@@ -44,7 +48,8 @@ matrix:
     - "./configure LDFLAGS=\"-static\" PKG_CONFIG=\"pkg-config --static\" --prefix=`pwd`/depends/arm-linux-gnueabihf --enable-cxx
       --disable-shared --enable-static --with-pic"
     - make
-    before_deploy: ./prepare-for-deploy.sh false linux-armhf "$TRAVIS_TAG"
+    - ./rename-binaries.sh false
+    before_deploy: ./prepare-for-deploy.sh  linux-armhf "$TRAVIS_TAG"
     env:
     - BUILD_FOR="Linux armhf"
   - os: linux
@@ -64,7 +69,8 @@ matrix:
     - "./configure --prefix=`pwd`/depends/x86_64-w64-mingw32 --enable-cxx --disable-shared
       --enable-static --with-pic"
     - make
-    before_deploy: ./prepare-for-deploy.sh true windows-x86_64 "$TRAVIS_TAG"
+    - ./rename-binaries.sh true 
+    before_deploy: ./prepare-for-deploy.sh windows-x86_64 "$TRAVIS_TAG"
     env:
     - BUILD_FOR="Windows x86_64"
   - os: linux
@@ -84,7 +90,8 @@ matrix:
     - "./configure --prefix=`pwd`/depends/i686-w64-mingw32 --enable-cxx --disable-shared
       --enable-static --with-pic"
     - make
-    before_deploy: ./prepare-for-deploy.sh true windows-x86 "$TRAVIS_TAG"
+    - ./rename-binaries.sh true
+    before_deploy: ./prepare-for-deploy.sh windows-x86 "$TRAVIS_TAG"
     env:
     - BUILD_FOR="Windows x86"
   - os: osx
@@ -103,7 +110,9 @@ matrix:
     - "./autogen.sh"
     - "./configure --with-gui=no --with-libs=no --with-miniupnpc=no"
     - make
-    before_deploy: ./prepare-for-deploy.sh false mac "$TRAVIS_TAG"
+    - ./rename-binaries false
+    - cd tests && npx mocha && cd ..
+    before_deploy: ./prepare-for-deploy.sh mac "$TRAVIS_TAG"
     env:
     - BUILD_FOR=Mac
 notifications:
