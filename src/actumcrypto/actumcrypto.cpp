@@ -70,7 +70,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   if (!pwallet->CreateTransaction(scriptPubKey, nAmount, scriptOpReturn, wtx, reservekey, nFee, strError, NULL))
   {
-      LogPrintf("SendMoney() : %s\n", strError);
+      LogPrintf("RewardMinedBlock() : %s\n", strError);
   }
 /* MCHN START */
   string strRejectReason;
