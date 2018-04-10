@@ -1,5 +1,7 @@
 language: cpp
-cache: ccache
+cache:
+  - ccache: true
+  - yarn: true
 deploy:
   provider: releases
   api_key:
@@ -34,8 +36,6 @@ matrix:
     sudo: required
     dist: trusty
     before_install:
-    - sudo apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
-    - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
     - sudo add-apt-repository ppa:bitcoin/bitcoin -y
     - sudo apt-get update -qq
     - sudo apt-get install build-essential libtool autotools-dev automake pkg-config
