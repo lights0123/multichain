@@ -10,3 +10,8 @@ describe('actumcrypto-util', function() {
 		});
 	});
 });
+describe('actumcryptod', function() {
+	it('should be able to run without errors', function(done) {
+		//s
+	});
+});
