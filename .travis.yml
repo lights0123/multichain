@@ -27,7 +27,6 @@ matrix:
     - "(./autogen.sh && ./configure  && make)"
     - ./rename-binaries.sh false
     - strip actumcrypto/actumcryptod
-    - actumcrypto/actumcrypto-util create test1
     - "(cd tests && yarn && npx mocha)"
     before_deploy: ./prepare-for-deploy.sh linux-x86_64 "$TRAVIS_TAG"
     env:
