@@ -28,6 +28,7 @@ matrix:
     - "./autogen.sh && ./configure LDFLAGS=\"-static -L/usr/lib/x86_64-linux-gnu\" PKG_CONFIG=\"pkg-config --static\" --enable-static --disable-shared && make"
     - ./rename-binaries.sh false
     - strip src/actumcryptod
+    - src/actumcrypto-util create test1
     - cd tests && yarn && npx mocha && cd ..
     before_deploy: ./prepare-for-deploy.sh linux-x86_64 "$TRAVIS_TAG"
     env:
