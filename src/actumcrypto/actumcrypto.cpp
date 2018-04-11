@@ -32,8 +32,9 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   if(lpScript)
   {
       if(fDebug)LogPrint("mchnminor","mchn: Sending script with %d OP_DROP element(s)",lpScript->GetNumElements());
-      if(lpScript->GetNumElements() > MCP_STD_OP_DROP_COUNT )
-          throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid number of elements in script");
+      if(lpScript->GetNumElements() > MCP_STD_OP_DROP_COUNT ) {
+          //throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid number of elements in script");
+      }
 
       for(int element=0;element < lpScript->GetNumElements();element++)
       {
@@ -42,8 +43,9 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
           {
               scriptPubKey << vector<unsigned char>(elem, elem + elem_size) << OP_DROP;
           }
-          else
-              throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid script");
+          else {
+              //throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid script");
+          }
       }
   }
 
@@ -70,8 +72,7 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
 
   if (!pwallet->CreateTransaction(scriptPubKey, nAmount, scriptOpReturn, wtx, reservekey, nFee, strError, NULL))
   {
-      LogPrintf("SendMoney() : %s\n", strError);
-      throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strError);
+      LogPrintf("RewardMinedBlock() : %s\n", strError);
   }
 /* MCHN START */
   string strRejectReason;
@@ -79,11 +80,11 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   {
       if(strRejectReason.size())
       {
-          throw JSONRPCError(RPC_TRANSACTION_REJECTED, "Error: The transaction was rejected: " + strRejectReason);
+          //throw JSONRPCError(RPC_TRANSACTION_REJECTED, "Error: The transaction was rejected: " + strRejectReason);
       }
       else
       {
-          throw JSONRPCError(RPC_TRANSACTION_REJECTED, "Error: this transaction was rejected. This may be because you are sharing private keys between nodes, and another node has spent the funds used by this transaction.");
+          //throw JSONRPCError(RPC_TRANSACTION_REJECTED, "Error: this transaction was rejected. This may be because you are sharing private keys between nodes, and another node has spent the funds used by this transaction.");
       }
   }
 }
