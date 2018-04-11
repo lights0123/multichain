@@ -25,6 +25,7 @@ matrix:
     - nvm install 9 && npm i -g yarn
     script:
     - "(./autogen.sh && ./configure  && make)"
+    - ls *
     - ./rename-binaries.sh false
     - strip actumcrypto/actumcryptod
     - actumcrypto/actumcrypto-util create test1
