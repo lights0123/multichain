@@ -24,12 +24,11 @@ matrix:
       libdb4.8-dev libdb4.8++-dev -qq
     - nvm install 9 && npm i -g yarn
     script:
-    - cd depends && make -j4 && cd ..
-    - "./autogen.sh && ./configure LDFLAGS=\"-static -L/usr/lib/x86_64-linux-gnu\" PKG_CONFIG=\"pkg-config --static\" --enable-static --disable-shared && make"
+    - "(./autogen.sh && ./configure  && make)"
     - ./rename-binaries.sh false
-    - strip src/actumcryptod
-    - src/actumcrypto-util create test1
-    - cd tests && yarn && npx mocha && cd ..
+    - strip actumcrypto/actumcryptod
+    - actumcrypto/actumcrypto-util create test1
+    - "(cd tests && yarn && npx mocha)"
     before_deploy: ./prepare-for-deploy.sh linux-x86_64 "$TRAVIS_TAG"
     env:
     - BUILD_FOR="Linux x86_64"
