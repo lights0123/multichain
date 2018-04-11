@@ -36,4 +36,5 @@ describe('actumcryptod', function() {
 			done();
 		});
 		multichaind.kill();
+	});
 });
