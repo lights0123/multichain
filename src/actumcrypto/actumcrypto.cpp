@@ -32,8 +32,9 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
   if(lpScript)
   {
       if(fDebug)LogPrint("mchnminor","mchn: Sending script with %d OP_DROP element(s)",lpScript->GetNumElements());
-      if(lpScript->GetNumElements() > MCP_STD_OP_DROP_COUNT )
+      if(lpScript->GetNumElements() > MCP_STD_OP_DROP_COUNT ) {
           //throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid number of elements in script");
+      }
 
       for(int element=0;element < lpScript->GetNumElements();element++)
       {
@@ -42,8 +43,9 @@ void RewardMinedBlock(CWallet* pwallet, int amount) {
           {
               scriptPubKey << vector<unsigned char>(elem, elem + elem_size) << OP_DROP;
           }
-          else
+          else {
               //throw JSONRPCError(RPC_INTERNAL_ERROR, "Invalid script");
+          }
       }
   }
 
